@@ -22,6 +22,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/products', function () {
+        return Inertia::render('Products');
+    })->name('products');
+    Route::get('/products/create', function () {
+        return Inertia::render('Forms/ProductForm');
+    })->name('products.create');
 });
 
 require __DIR__.'/auth.php';
