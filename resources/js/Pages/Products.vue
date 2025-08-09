@@ -1,12 +1,16 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import MainLayout from '@/Layouts/MainLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
+import { getInventoryNavItems } from '@/@types/NavItems';
 
-const viewMode = ref('card'); // 'card' or 'table'
+const viewMode = ref('card');
 const searchQuery = ref('');
 
-// Sample product data
+const inventoryItems = getInventoryNavItems();
+console.log(inventoryItems);
+
 const products = ref([
     {
         id: 1,
@@ -70,7 +74,7 @@ const products = ref([
     }
 ]);
 
-// Computed property for filtered products
+
 const filteredProducts = computed(() => {
     if (!searchQuery.value) {
         return products.value;
@@ -104,7 +108,7 @@ const clearSearch = () => {
 <template>
     <Head title="Products" />
 
-    <AuthenticatedLayout>
+    <MainLayout :nav-items="inventoryItems">
         <div class="py-8">
             <div class="sm:px-6 lg:px-8">
                 <div class="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
@@ -183,7 +187,7 @@ const clearSearch = () => {
                     </div>
                 </div>
 
-                <div v-if="viewMode === 'card'" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div v-if="viewMode === 'card'" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6">
                     <div
                         v-for="product in filteredProducts"
                         :key="product.id"
@@ -333,5 +337,5 @@ const clearSearch = () => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </MainLayout>
 </template>

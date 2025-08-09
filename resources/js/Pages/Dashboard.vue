@@ -8,6 +8,14 @@ const selectedDate = ref(new Date());
 
 const navigationModules = [
     {
+        name: 'Accounting',
+        route: '#',
+        icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+        color: 'bg-emerald-500 hover:bg-emerald-600',
+        glassColor: 'bg-emerald-500/20 backdrop-blur-md border-emerald-200/30',
+        description: 'Financial management'
+    },
+    {
         name: 'Bookings',
         route: '#',
         icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
@@ -42,10 +50,10 @@ const navigationModules = [
     {
         name: 'POS',
         route: '#',
-        icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+        icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
         color: 'bg-orange-500 hover:bg-orange-600',
         glassColor: 'bg-orange-500/20 backdrop-blur-md border-orange-200/30',
-        description: 'Analytics & reports'
+        description: 'Point of Sale system'
     },
     {
         name: 'Settings',
@@ -219,7 +227,7 @@ const goToToday = () => {
                     </div>
                     <div class="lg:col-span-3">
                         <div class="p-6 bg-transparent rounded-lg">
-                            <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+                            <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
                                 <template v-for="module in navigationModules" :key="module.name">
                                     <Link
                                         v-if="module.route !== '#'"
@@ -231,7 +239,7 @@ const goToToday = () => {
                                             module.glassColor
                                         ]"></div>
 
-                                        <div class="relative z-10">
+                                        <div class="relative z-10 flex flex-col items-center justify-center">
                                             <div :class="[
                                                 'w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg',
                                                 module.color
@@ -242,7 +250,7 @@ const goToToday = () => {
                                             </div>
 
                                             <div class="transition-all duration-300 group-hover:text-white">
-                                                <h3 class="mb-1 text-sm font-semibold text-gray-900 transition-colors duration-300 group-hover:text-white">
+                                                <h3 class="mb-1 text-sm font-semibold text-gray-900 transition-colors duration-300 group-hover:text-gray-600">
                                                     {{ module.name }}
                                                 </h3>
                                             </div>
@@ -266,7 +274,7 @@ const goToToday = () => {
                                             module.glassColor
                                         ]"></div>
 
-                                        <div class="relative z-10">
+                                        <div class="relative z-10 flex flex-col items-center justify-center">
                                             <div :class="[
                                                 'w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg',
                                                 module.color
@@ -276,7 +284,7 @@ const goToToday = () => {
                                                 </svg>
                                             </div>
                                             <div class="transition-all duration-300">
-                                                <h3 class="mb-1 text-sm font-semibold text-gray-900 transition-colors duration-300 group-hover:text-white">
+                                                <h3 class="mb-1 text-sm font-semibold text-gray-900 transition-colors duration-300 group-hover:text-gray-600">
                                                     {{ module.name }}
                                                 </h3>
                                             </div>

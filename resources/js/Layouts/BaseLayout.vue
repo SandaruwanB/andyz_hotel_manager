@@ -12,9 +12,9 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-200">
             <nav
-                class="bg-white border-b border-gray-100 shadow-sm"
+                class="bg-transparent"
             >
                 <div class="max-w-full px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-14">
@@ -78,7 +78,7 @@ const showingNavigationDropdown = ref(false);
                                     showingNavigationDropdown =
                                         !showingNavigationDropdown
                                 "
-                                class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                class="inline-flex items-center justify-center p-2 text-gray-600 transition duration-150 ease-in-out rounded-md hover:text-gray-700 focus:text-gray-700 focus:outline-none"
                             >
                                 <svg
                                     class="w-6 h-6"

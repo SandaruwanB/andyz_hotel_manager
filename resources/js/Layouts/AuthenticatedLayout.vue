@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-200">
             <nav
                 class="bg-white border-b border-gray-100 shadow-sm"
             >
@@ -20,18 +20,23 @@ const showingNavigationDropdown = ref(false);
                     <div class="flex justify-between h-14">
                         <div class="flex">
                             <div class="flex items-center shrink-0">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block w-auto text-gray-800 fill-current h-9"
-                                    />
+                                <Link
+                                    :href="route('dashboard')"
+                                    class="group relative p-3 text-gray-600 transition-all duration-300 hover:text-gray-900 hover:bg-gray-100 rounded-lg hover:shadow-lg hover:-translate-y-0.5 hover:scale-105"
+                                >
+                                    <svg class="w-6 h-6 transition-opacity duration-300 group-hover:opacity-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                    <svg class="absolute inset-0 w-6 h-6 m-3 transition-opacity duration-300 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                    </svg>
                                 </Link>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    href="#"
                                 >
                                     Overview
                                 </NavLink>
