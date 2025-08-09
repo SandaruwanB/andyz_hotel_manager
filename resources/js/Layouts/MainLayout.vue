@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
@@ -22,7 +21,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div class="min-h-screen bg-gray-200">
-            <nav class="bg-white border-b border-gray-100 shadow-sm">
+            <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm">
                 <div class="max-w-full px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-14">
                         <div class="flex">
@@ -38,6 +37,10 @@ const showingNavigationDropdown = ref(false);
                                     <svg class="absolute inset-0 w-6 h-6 m-3 transition-opacity duration-300 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                     </svg>
+
+                                    <div class="absolute z-10 px-2 py-1 mt-2 text-xs text-white transition-opacity duration-300 transform -translate-x-1/2 bg-gray-800 rounded opacity-0 left-1/2 top-full group-hover:opacity-100 whitespace-nowrap">
+                                        Back to Dashboard
+                                    </div>
                                 </Link>
                             </div>
 
@@ -138,7 +141,6 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <!-- Mobile menu button -->
                         <div class="flex items-center -me-2 sm:hidden">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
@@ -171,23 +173,19 @@ const showingNavigationDropdown = ref(false);
                     </div>
                 </div>
 
-                <!-- Mobile Navigation Menu -->
                 <div
                     :class="{
                         block: showingNavigationDropdown,
                         hidden: !showingNavigationDropdown,
                     }"
-                    class="sm:hidden"
+                    class="bg-white border-t border-gray-200 sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <!-- Mobile Dashboard Link -->
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
 
-                        <!-- Mobile Navigation Items -->
                         <template v-for="navItem in navItems" :key="'mobile-' + navItem.name">
-                            <!-- Mobile Single Link -->
                             <ResponsiveNavLink
                                 v-if="!navItem.children || navItem.children.length === 0"
                                 :href="navItem.route ? route(navItem.route) : navItem.href || '#'"
@@ -196,7 +194,6 @@ const showingNavigationDropdown = ref(false);
                                 {{ navItem.name }}
                             </ResponsiveNavLink>
 
-                            <!-- Mobile Dropdown Items -->
                             <div v-else class="pl-4">
                                 <div class="py-2 text-sm font-medium text-gray-600">{{ navItem.name }}</div>
                                 <template v-for="child in navItem.children" :key="'mobile-child-' + child.name">
@@ -212,7 +209,6 @@ const showingNavigationDropdown = ref(false);
                         </template>
                     </div>
 
-                    <!-- Mobile User Menu -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
                             <div class="text-base font-medium text-gray-800">
@@ -235,17 +231,16 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </nav>
 
-            <!-- Header Slot -->
-            <header class="bg-white shadow" v-if="$slots.header">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Main Content -->
-            <main>
-                <slot />
-            </main>
+            <div class="pt-14">
+                <header class="bg-white shadow" v-if="$slots.header">
+                    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <slot name="header" />
+                    </div>
+                </header>
+                <main>
+                    <slot />
+                </main>
+            </div>
         </div>
     </div>
 </template>

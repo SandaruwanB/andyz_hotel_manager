@@ -9,7 +9,6 @@ const viewMode = ref('card');
 const searchQuery = ref('');
 
 const inventoryItems = getInventoryNavItems();
-console.log(inventoryItems);
 
 const products = ref([
     {
