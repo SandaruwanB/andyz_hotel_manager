@@ -3,6 +3,9 @@ import { ref, computed } from 'vue';
 import { useForm, Head } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { getInventoryNavItems, navigationItems } from '@/@types/NavItems';
+import TabContainer from '@/Components/tab/TabContainer.vue';
+import TabItem from '@/Components/tab/TabItem.vue';
+import { TabPanel } from '@/Components/tab';
 
 const props = defineProps({
     product: {
@@ -236,7 +239,27 @@ const inventoryItems = getInventoryNavItems();
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
+                <TabContainer v-model="activeTab" variant="default" size="md">
+                    <template #tabs>
+                        <TabItem
+                            id="general"
+                            label="General Information"
+                        />
+                        <TabItem
+                            id="pricing"
+                            label="Pricing & Inventory"
+                        />
+                        <TabItem
+                            id="details"
+                            label="Additional Details"
+                        />
+                    </template>
+
+                    <template #content>
+                        <div class="p-6">
+                            <TabPanel id="general">
+                                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                             <div class="lg:col-span-1">
                                 <label class="block mb-2 text-sm font-medium text-gray-700">
                                     Product Image
@@ -269,9 +292,7 @@ const inventoryItems = getInventoryNavItems();
                                 </div>
                             </div>
 
-                            <!-- Product Details -->
                             <div class="space-y-4 lg:col-span-2">
-                                <!-- Product Name -->
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">
                                         Product Name *
@@ -284,7 +305,6 @@ const inventoryItems = getInventoryNavItems();
                                     </p>
                                 </div>
 
-                                <!-- Internal Reference & Barcode -->
                                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
                                         <label for="internal_reference" class="block text-sm font-medium text-gray-700">
@@ -302,7 +322,6 @@ const inventoryItems = getInventoryNavItems();
                                     </div>
                                 </div>
 
-                                <!-- Category & Supplier -->
                                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
                                         <label for="category_id" class="block text-sm font-medium text-gray-700">
@@ -336,7 +355,6 @@ const inventoryItems = getInventoryNavItems();
                                     </div>
                                 </div>
 
-                                <!-- Description -->
                                 <div>
                                     <label for="description" class="block text-sm font-medium text-gray-700">
                                         Description
@@ -346,36 +364,10 @@ const inventoryItems = getInventoryNavItems();
                                 </div>
                             </div>
                         </div>
-
-                <!-- Tabs -->
-                <div class="border-b border-gray-200">
-                    <nav class="flex px-6 space-x-8" aria-label="Tabs">
-                        <button @click="activeTab = 'general'" :class="[
-                            'py-4 px-1 border-b-2 font-medium text-sm',
-                            activeTab === 'general'
-                                ? 'border-indigo-500 text-indigo-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        ]">
-                            General Information
-                        </button>
-                        <button @click="activeTab = 'pricing'" :class="[
-                            'py-4 px-1 border-b-2 font-medium text-sm',
-                            activeTab === 'pricing'
-                                ? 'border-indigo-500 text-indigo-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        ]">
-                            Pricing & Inventory
-                        </button>
-                        <button @click="activeTab = 'details'" :class="[
-                            'py-4 px-1 border-b-2 font-medium text-sm',
-                            activeTab === 'details'
-                                ? 'border-indigo-500 text-indigo-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                        ]">
-                            Additional Details
-                        </button>
-                    </nav>
-                </div>
+                            </TabPanel>
+                        </div>
+                    </template>
+                </TabContainer>
 
                 <div class="p-6">
                     <div v-show="activeTab === 'general'" class="space-y-6">
