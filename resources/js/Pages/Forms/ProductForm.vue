@@ -6,6 +6,7 @@ import { getInventoryNavItems, navigationItems } from '@/@types/NavItems';
 import TabContainer from '@/Components/tab/TabContainer.vue';
 import TabItem from '@/Components/tab/TabItem.vue';
 import { TabPanel } from '@/Components/tab';
+import { ImageField, MonetoryField, SelectField, TextAreaField, TextInputField } from '@/Components/form';
 
 const props = defineProps({
     product: {
@@ -215,7 +216,7 @@ const inventoryItems = getInventoryNavItems();
     <Head title="Create Product" />
 
     <MainLayout :nav-items="inventoryItems">
-        <div class="flex flex-col gap-6 px-10 mt-10 lg:flex-row">
+        <div class="flex flex-col gap-6 px-10 mt-5 lg:flex-row">
             <div class="flex-1 overflow-hidden bg-white rounded-lg shadow-sm">
                 <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
@@ -260,250 +261,85 @@ const inventoryItems = getInventoryNavItems();
                         <div class="p-6">
                             <TabPanel id="general">
                                 <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                            <div class="lg:col-span-1">
-                                <label class="block mb-2 text-sm font-medium text-gray-700">
-                                    Product Image
-                                </label>
-                                <div class="p-4 border-2 border-gray-300 border-dashed rounded-lg">
-                                    <div v-if="imagePreview" class="relative">
-                                        <img :src="imagePreview" alt="Product preview"
-                                            class="object-cover w-full h-48 rounded-lg" />
-                                        <button @click="removeImage" type="button"
-                                            class="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-red-500 rounded-full top-2 right-2 hover:bg-red-600">
-                                            ×
-                                        </button>
+                                    <div class="lg:col-span-1">
+                                        <ImageField
+                                            id="product_image"
+                                            v-model="imagePreview"
+                                            label="Product Image"
+                                            @file-selected="handleImageSelected"
+                                        />
                                     </div>
-                                    <div v-else class="text-center">
-                                        <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        <div class="mt-2">
-                                            <label for="image"
-                                                class="text-indigo-600 cursor-pointer hover:text-indigo-500">
-                                                <span class="text-sm font-medium">Upload an image</span>
-                                                <input id="image" type="file" accept="image/*"
-                                                    @change="handleImageUpload" class="sr-only" />
-                                            </label>
+                                    <div class="space-y-4 lg:col-span-2">
+                                        <TextInputField
+                                            id="name"
+                                            v-model="form.name"
+                                            label="Product Name"
+                                            :required="true"
+                                            :error="form.errors.name"
+                                        />
+
+                                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                            <TextInputField
+                                                id="internal_reference"
+                                                v-model="form.internal_reference"
+                                                label="Internal Reference"
+                                            />
+                                            <TextInputField
+                                                id="barcode"
+                                                v-model="form.barcode"
+                                                label="Barcode"
+                                            />
                                         </div>
-                                        <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="space-y-4 lg:col-span-2">
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700">
-                                        Product Name *
-                                    </label>
-                                    <input id="name" v-model="form.name" type="text" required
-                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        :class="{ 'border-red-300': form.errors.name }" />
-                                    <p v-if="form.errors.name" class="mt-1 text-sm text-red-600">
-                                        {{ form.errors.name }}
-                                    </p>
-                                </div>
+                                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                            <SelectField
+                                                id="category_id"
+                                                v-model="form.category_id"
+                                                label="Category"
+                                                :options="categoriesForSelect"
+                                                placeholder="Select Category"
+                                                :required="true"
+                                                :error="form.errors.category_id"
+                                            />
+                                            <SelectField
+                                                id="supplier_id"
+                                                v-model="form.supplier_id"
+                                                label="Supplier"
+                                                :options="suppliersForSelect"
+                                                placeholder="Select Supplier"
+                                            />
+                                        </div>
 
-                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="internal_reference" class="block text-sm font-medium text-gray-700">
-                                            Internal Reference
-                                        </label>
-                                        <input id="internal_reference" v-model="form.internal_reference" type="text"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                    </div>
-                                    <div>
-                                        <label for="barcode" class="block text-sm font-medium text-gray-700">
-                                            Barcode
-                                        </label>
-                                        <input id="barcode" v-model="form.barcode" type="text"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                        <div class="grid grid-cols-1 gap-4">
+                                            <TextAreaField
+                                                id="description"
+                                                v-model="form.description"
+                                                label="Description"
+                                                rows="3"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="category_id" class="block text-sm font-medium text-gray-700">
-                                            Category *
-                                        </label>
-                                        <select id="category_id" v-model="form.category_id" required
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            :class="{ 'border-red-300': form.errors.category_id }">
-                                            <option value="">Select Category</option>
-                                            <option v-for="category in categories" :key="category.id"
-                                                :value="category.id">
-                                                {{ category.name }}
-                                            </option>
-                                        </select>
-                                        <p v-if="form.errors.category_id" class="mt-1 text-sm text-red-600">
-                                            {{ form.errors.category_id }}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <label for="supplier_id" class="block text-sm font-medium text-gray-700">
-                                            Supplier
-                                        </label>
-                                        <select id="supplier_id" v-model="form.supplier_id"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">Select Supplier</option>
-                                            <option v-for="supplier in suppliers" :key="supplier.id"
-                                                :value="supplier.id">
-                                                {{ supplier.name }}
-                                            </option>
-                                        </select>
-                                    </div>
+                            </TabPanel>
+                            <TabPanel id="pricing">
+                                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                                        <MonetoryField
+                                            id="internal_reference"
+                                            v-model="form.internal_reference"
+                                            label="Unit Price"
+                                        />
+                                        <MonetoryField
+                                            id="barcode"
+                                            v-model="form.barcode"
+                                            label="Unit Cost"
+                                        />
                                 </div>
-
-                                <div>
-                                    <label for="description" class="block text-sm font-medium text-gray-700">
-                                        Description
-                                    </label>
-                                    <textarea id="description" v-model="form.description" rows="3"
-                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
-                                </div>
-                            </div>
-                        </div>
                             </TabPanel>
                         </div>
                     </template>
                 </TabContainer>
 
                 <div class="p-6">
-                    <div v-show="activeTab === 'general'" class="space-y-6">
-                        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                            <div class="lg:col-span-1">
-                                <label class="block mb-2 text-sm font-medium text-gray-700">
-                                    Product Image
-                                </label>
-                                <div class="p-4 border-2 border-gray-300 border-dashed rounded-lg">
-                                    <div v-if="imagePreview" class="relative">
-                                        <img :src="imagePreview" alt="Product preview"
-                                            class="object-cover w-full h-48 rounded-lg" />
-                                        <button @click="removeImage" type="button"
-                                            class="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-red-500 rounded-full top-2 right-2 hover:bg-red-600">
-                                            ×
-                                        </button>
-                                    </div>
-                                    <div v-else class="text-center">
-                                        <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        <div class="mt-2">
-                                            <label for="image"
-                                                class="text-indigo-600 cursor-pointer hover:text-indigo-500">
-                                                <span class="text-sm font-medium">Upload an image</span>
-                                                <input id="image" type="file" accept="image/*"
-                                                    @change="handleImageUpload" class="sr-only" />
-                                            </label>
-                                        </div>
-                                        <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Product Details -->
-                            <div class="space-y-4 lg:col-span-2">
-                                <!-- Product Name -->
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700">
-                                        Product Name *
-                                    </label>
-                                    <input id="name" v-model="form.name" type="text" required
-                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        :class="{ 'border-red-300': form.errors.name }" />
-                                    <p v-if="form.errors.name" class="mt-1 text-sm text-red-600">
-                                        {{ form.errors.name }}
-                                    </p>
-                                </div>
-
-                                <!-- Internal Reference & Barcode -->
-                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="internal_reference" class="block text-sm font-medium text-gray-700">
-                                            Internal Reference
-                                        </label>
-                                        <input id="internal_reference" v-model="form.internal_reference" type="text"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                    </div>
-                                    <div>
-                                        <label for="barcode" class="block text-sm font-medium text-gray-700">
-                                            Barcode
-                                        </label>
-                                        <input id="barcode" v-model="form.barcode" type="text"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                                    </div>
-                                </div>
-
-                                <!-- Category & Supplier -->
-                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="category_id" class="block text-sm font-medium text-gray-700">
-                                            Category *
-                                        </label>
-                                        <select id="category_id" v-model="form.category_id" required
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            :class="{ 'border-red-300': form.errors.category_id }">
-                                            <option value="">Select Category</option>
-                                            <option v-for="category in categories" :key="category.id"
-                                                :value="category.id">
-                                                {{ category.name }}
-                                            </option>
-                                        </select>
-                                        <p v-if="form.errors.category_id" class="mt-1 text-sm text-red-600">
-                                            {{ form.errors.category_id }}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <label for="supplier_id" class="block text-sm font-medium text-gray-700">
-                                            Supplier
-                                        </label>
-                                        <select id="supplier_id" v-model="form.supplier_id"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                            <option value="">Select Supplier</option>
-                                            <option v-for="supplier in suppliers" :key="supplier.id"
-                                                :value="supplier.id">
-                                                {{ supplier.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Description -->
-                                <div>
-                                    <label for="description" class="block text-sm font-medium text-gray-700">
-                                        Description
-                                    </label>
-                                    <textarea id="description" v-model="form.description" rows="3"
-                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Type Checkboxes -->
-                        <div class="p-4 rounded-lg bg-gray-50">
-                            <h4 class="mb-3 text-sm font-medium text-gray-900">Product Type</h4>
-                            <div class="space-y-2">
-                                <label class="flex items-center">
-                                    <input v-model="form.can_be_sold" type="checkbox"
-                                        class="text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                                    <span class="ml-2 text-sm text-gray-700">Can be sold</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input v-model="form.can_be_purchased" type="checkbox"
-                                        class="text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                                    <span class="ml-2 text-sm text-gray-700">Can be purchased</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input v-model="form.track_inventory" type="checkbox"
-                                        class="text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                                    <span class="ml-2 text-sm text-gray-700">Track inventory</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Pricing & Inventory Tab -->
                     <div v-show="activeTab === 'pricing'" class="space-y-6">
