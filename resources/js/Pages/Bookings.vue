@@ -1,5 +1,7 @@
 <script setup>
+import { getBookingNavItems } from '@/@types/NavItems';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import MainLayout from '@/Layouts/MainLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, computed, onMounted } from 'vue';
 
@@ -68,7 +70,6 @@ const bookings = ref([
     }
 ]);
 
-// Calendar calculations
 const calendarDays = computed(() => {
     const year = currentDate.value.getFullYear();
     const month = currentDate.value.getMonth();
@@ -166,7 +167,6 @@ const getRoomStatusColor = (status) => {
     return colors[status] || 'bg-gray-500';
 };
 
-// Navigation functions
 const previousMonth = () => {
     currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() - 1);
 };
@@ -179,7 +179,6 @@ const goToToday = () => {
     currentDate.value = new Date();
 };
 
-// Statistics
 const todayStats = computed(() => {
     const today = new Date();
     const todayBookings = getBookingsForDate(today);
@@ -199,12 +198,14 @@ const todayStats = computed(() => {
         occupancyRate: Math.round((todayBookings.length / rooms.value.length) * 100)
     };
 });
+
+const navItems = getBookingNavItems();
 </script>
 
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <MainLayout :nav-items="navItems">
         <div class="py-8">
             <div class="sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
@@ -470,5 +471,5 @@ const todayStats = computed(() => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </MainLayout>
 </template>

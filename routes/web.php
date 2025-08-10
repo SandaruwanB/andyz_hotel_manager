@@ -29,6 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/create', function () {
         return Inertia::render('Forms/ProductForm');
     })->name('products.create');
+
+    Route::get('/bookings', function (){
+        return Inertia::render('Bookings');
+    })->name('bookings');
 });
 
 require __DIR__.'/auth.php';

@@ -7,6 +7,11 @@ const navigationItems = [
                 route: 'products',
             },
             {
+                name: 'Actions',
+                children: [
+                ]
+            },
+            {
                 name: 'Products',
                 children: [
                     {
@@ -16,6 +21,38 @@ const navigationItems = [
                     {
                         name: 'Product Categories',
                         route: 'products',
+                    },
+                ]
+            },
+            {
+                name: 'Reporting',
+                children: [
+                ]
+            },
+            {
+                name: 'Configuration',
+                children: [
+                ]
+            },
+        ]
+    },
+    {
+        main: 'Bookings',
+        links: [
+            {
+                name: 'Overview',
+                route: 'bookings',
+            },
+            {
+                name: 'Bookings',
+                children: [
+                    {
+                        name: 'Bookings',
+                        route: 'bookings',
+                    },
+                    {
+                        name: 'Customers',
+                        route: 'bookings',
                     },
                 ]
             },
@@ -181,9 +218,8 @@ export const getFinancialNavItems = (userRole = 'admin') => {
     return getNavigationItems('Financial', userRole);
 };
 
-export const getBookingNavItems = () => {
-    const allLinks = navigationItems.flatMap(item => item.links);
-    return allLinks.filter(link => link.name === 'Bookings');
+export const getBookingNavItems = (userRole = 'admin') => {
+    return getNavigationItems('Bookings', userRole);
 };
 
 export const getAccountingNavItems = () => {
