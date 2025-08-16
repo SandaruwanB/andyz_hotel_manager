@@ -21,6 +21,8 @@ const showingNavigationDropdown = ref(false);
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
                                         class="block w-auto text-gray-800 fill-current h-9"
+                                        :width="20"
+                                        :height="20"
                                     />
                                 </Link>
                             </div>

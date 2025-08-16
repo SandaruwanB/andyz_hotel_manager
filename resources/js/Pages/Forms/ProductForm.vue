@@ -101,18 +101,6 @@ const cancel = () => {
     emit('cancel');
 };
 
-const addActivity = (type, message, details = '') => {
-    const newActivity = {
-        id: Date.now(),
-        type: type,
-        user: 'Current User',
-        message: message,
-        timestamp: new Date().toISOString(),
-        details: details
-    };
-
-    activityList.value.unshift(newActivity);
-};
 const inventoryItems = getInventoryNavItems();
 
 </script>
@@ -145,7 +133,6 @@ const inventoryItems = getInventoryNavItems();
                         </div>
                     </div>
                 </div>
-
                 <TabContainer v-model="activeTab" variant="default" size="md">
                     <template #tabs>
                         <TabItem
@@ -153,8 +140,8 @@ const inventoryItems = getInventoryNavItems();
                             label="General Information"
                         />
                         <TabItem
-                            id="pricing"
-                            label="Pricing & Inventory"
+                            id="inventory"
+                            label="Inventory"
                         />
                         <TabItem
                             id="details"
@@ -207,11 +194,25 @@ const inventoryItems = getInventoryNavItems();
                                                 :error="form.errors.category_id"
                                             />
                                             <SelectField
-                                                id="supplier_id"
-                                                v-model="form.supplier_id"
-                                                label="Supplier"
-                                                :options="suppliersForSelect"
-                                                placeholder="Select Supplier"
+                                                id="uom_id"
+                                                v-model="form.category_id"
+                                                label="Unit of Measure"
+                                                :options="categoriesForSelect"
+                                                placeholder="Select Unit of Measure"
+                                                :required="true"
+                                                :error="form.errors.category_id"
+                                            />
+                                        </div>
+                                        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                                            <MonetoryField
+                                                id="internal_reference"
+                                                v-model="form.internal_reference"
+                                                label="Unit Price"
+                                            />
+                                            <MonetoryField
+                                                id="barcode"
+                                                v-model="form.barcode"
+                                                label="Unit Cost"
                                             />
                                         </div>
 
@@ -226,17 +227,17 @@ const inventoryItems = getInventoryNavItems();
                                     </div>
                                 </div>
                             </TabPanel>
-                            <TabPanel id="pricing">
+                            <TabPanel id="inventory">
                                 <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                                    <MonetoryField
+                                    <TextInputField
                                         id="internal_reference"
                                         v-model="form.internal_reference"
-                                        label="Unit Price"
+                                        label="Weight"
                                     />
-                                    <MonetoryField
+                                    <TextInputField
                                         id="barcode"
                                         v-model="form.barcode"
-                                        label="Unit Cost"
+                                        label="Reordering Level"
                                     />
                                 </div>
                             </TabPanel>

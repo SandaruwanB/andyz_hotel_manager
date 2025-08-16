@@ -11,7 +11,7 @@ import { Link } from '@inertiajs/vue3';
             class="w-full px-3 py-4 mt-6 overflow-hidden bg-white sm:max-w-[300px] sm:rounded-md"
         >
             <Link href="/" class="flex flex-col items-center justify-center my-4">
-                <ApplicationLogo class="w-20 h-20 text-gray-500 fill-current" />
+                <ApplicationLogo :width="40" :height="40" />
                 <span class="text-[1rem] text-blue-900 font-semibold font-serif d-block">andyZ</span>
                 <span class="text-[.77rem] text-gray-700 d-block">Hotel Manager</span>
             </Link>

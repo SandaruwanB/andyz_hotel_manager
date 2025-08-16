@@ -9,6 +9,22 @@ const navigationItems = [
             {
                 name: 'Actions',
                 children: [
+                    {
+                        name: 'Receipts',
+                        route: 'products',
+                    },
+                    {
+                        name: 'Internal Transfers',
+                        route: 'products',
+                    },
+                    {
+                        name: 'Delivery',
+                        route: 'products',
+                    },
+                    {
+                        name: 'Stock Adjustment',
+                        route: 'products',
+                    },
                 ]
             },
             {
@@ -27,13 +43,16 @@ const navigationItems = [
             {
                 name: 'Reporting',
                 children: [
+                    {
+                        name: 'Stock',
+                        route: 'products',
+                    },
+                    {
+                        name: 'Move History',
+                        route: 'products',
+                    },
                 ]
-            },
-            {
-                name: 'Configuration',
-                children: [
-                ]
-            },
+            }
         ]
     },
     {
@@ -60,12 +79,7 @@ const navigationItems = [
                 name: 'Reporting',
                 children: [
                 ]
-            },
-            {
-                name: 'Configuration',
-                children: [
-                ]
-            },
+            }
         ]
     },
     {
