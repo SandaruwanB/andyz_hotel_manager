@@ -8,6 +8,7 @@ import TabItem from '@/Components/tab/TabItem.vue';
 import { TabPanel } from '@/Components/tab';
 import { ImageField, MonetoryField, SelectField, TextAreaField, TextInputField } from '@/Components/form';
 import { LoggerContainer } from '@/Components/logger';
+import Checkbox from '@/Components/Checkbox.vue';
 
 const props = defineProps({
     product: {
@@ -83,8 +84,8 @@ const form = useForm({
     dimensions: props.product?.dimensions || '',
     status: props.product?.status || 'active',
     track_inventory: props.product?.track_inventory || true,
-    can_be_sold: props.product?.can_be_sold || true,
-    can_be_purchased: props.product?.can_be_purchased || true,
+    can_be_sold: props.product?.can_be_sold || false,
+    can_be_purchased: props.product?.can_be_purchased || false,
     image: null,
 });
 
@@ -133,6 +134,44 @@ const inventoryItems = getInventoryNavItems();
                         </div>
                     </div>
                 </div>
+
+                <div class="p-6 border-b border-gray-200">
+                    <div class="space-y-6">
+                        <TextInputField
+                            id="name"
+                            v-model="form.name"
+                            label="Product"
+                            :required="true"
+                            :error="form.errors.name"
+                            placeholder="e.g. Coconut Powder"
+                        />
+
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <Checkbox
+                                    id="can_be_sold"
+                                    :checked="form.can_be_sold"
+                                    @update:checked="form.can_be_sold = $event"
+                                />
+                                <label for="can_be_sold" class="ml-2 text-sm font-medium text-gray-700">
+                                    Sale
+                                </label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <Checkbox
+                                    id="can_be_purchased"
+                                    :checked="form.can_be_purchased"
+                                    @update:checked="form.can_be_purchased = $event"
+                                />
+                                <label for="can_be_purchased" class="ml-2 text-sm font-medium text-gray-700">
+                                    Purchase
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <TabContainer v-model="activeTab" variant="default" size="md">
                     <template #tabs>
                         <TabItem
@@ -162,14 +201,6 @@ const inventoryItems = getInventoryNavItems();
                                         />
                                     </div>
                                     <div class="space-y-4 lg:col-span-2">
-                                        <TextInputField
-                                            id="name"
-                                            v-model="form.name"
-                                            label="Product Name"
-                                            :required="true"
-                                            :error="form.errors.name"
-                                        />
-
                                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                             <TextInputField
                                                 id="internal_reference"
