@@ -9,6 +9,8 @@ class PosCategory extends Model
     protected $fillable = [
         'name',
         'description',
-        'image'
+        'image',
+        'create_uid',
+        'write_uid'
     ];
 }

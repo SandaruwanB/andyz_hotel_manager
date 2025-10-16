@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unit_of_measures', function (Blueprint $table) {
+        Schema::create('stock_pos_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->json('image')->nullable();
+            $table->foreignId('create_uid')->constrained('res_users');
+            $table->foreignId('write_uid')->constrained('res_users');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unit_of_measures');
+        Schema::dropIfExists('pos_categories');
     }
 };
