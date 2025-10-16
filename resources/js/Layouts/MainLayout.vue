@@ -44,7 +44,7 @@ const showingNavigationDropdown = ref(false);
                                 </Link>
                             </div>
 
-                            <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
+                            <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
                                 <template v-for="navItem in navItems" :key="navItem.name">
                                     <NavLink
                                         v-if="!navItem.children || navItem.children.length === 0"

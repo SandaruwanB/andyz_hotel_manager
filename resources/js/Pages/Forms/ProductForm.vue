@@ -9,6 +9,7 @@ import { TabPanel } from '@/Components/tab';
 import { ImageField, MonetoryField, SelectField, TextAreaField, TextInputField } from '@/Components/form';
 import { LoggerContainer } from '@/Components/logger';
 import Checkbox from '@/Components/Checkbox.vue';
+import PageBreadcrumb from '@/Components/PageBreadcrumb.vue';
 
 const props = defineProps({
     product: {
@@ -87,6 +88,7 @@ const form = useForm({
     can_be_sold: props.product?.can_be_sold || false,
     can_be_purchased: props.product?.can_be_purchased || false,
     image: null,
+    notes: props.product?.notes || '',
 });
 
 const imagePreview = ref(props.product?.image || null);
@@ -104,13 +106,46 @@ const cancel = () => {
 
 const inventoryItems = getInventoryNavItems();
 
+const breadcrumbItems = computed(() => [
+    {
+        label: 'Dashboard',
+        href: '/dashboard',
+        isHome: true
+    },
+    {
+        label: 'Inventory',
+        href: '/products'
+    },
+    {
+        label: 'Products',
+        href: '/products'
+    },
+    {
+        label: props.product.id ? 'Edit Product' : 'New Product',
+        current: true
+    }
+]);
+
+const handleBreadcrumbNavigation = (item) => {
+    if (item.href) {
+        window.location.href = item.href;
+    }
+};
+
 </script>
 
 <template>
     <Head title="Create Product" />
 
     <MainLayout :nav-items="inventoryItems">
-        <div class="flex flex-col gap-6 px-10 mt-5 lg:flex-row">
+        <div class="px-10 mt-5">
+            <PageBreadcrumb
+                :items="breadcrumbItems"
+                @navigate="handleBreadcrumbNavigation"
+            />
+        </div>
+
+        <div class="flex flex-col gap-6 px-10 lg:flex-row">
             <div class="flex-1 overflow-hidden bg-white rounded-lg shadow-sm">
                 <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
                     <div class="flex items-center justify-between">
@@ -271,6 +306,14 @@ const inventoryItems = getInventoryNavItems();
                                         label="Reordering Level"
                                     />
                                 </div>
+                            </TabPanel>
+                            <TabPanel id="details">
+                                <TextAreaField
+                                    id="notes"
+                                    v-model="form.notes"
+                                    label="Notes"
+                                    rows="5"
+                                />
                             </TabPanel>
                         </div>
                     </template>
